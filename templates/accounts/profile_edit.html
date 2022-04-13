@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+	<div class="sign section--bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="sign__content">
+						<form method="POST" action="{% url 'profile edit' profile.pk %}" class="sign__form">
+							<a href="{% url 'index' %}" class="sign__logo">
+								<img src="{% static 'img/logo.png'%}" alt="">
+							</a>
+							{% csrf_token %}
+                            {{ form }}
+							<button class="sign__btn" type="submit">Edit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

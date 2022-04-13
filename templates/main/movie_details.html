@@ -1,0 +1,54 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+    <section class="section section--details section--bg" data-bg="img/section/details.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="section__title section__title--mb">{{ movie.name }}</h1>
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div class="card card--details">
+                        <div class="row">
+                            <div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-5">
+                                <div class="card__cover">
+                                    <img src="{{ movie.poster }}" alt="">
+                                    <span class="card__rate card__rate--green">{{ movie.average_grade }}</span>
+                                </div>
+                                <a href="{{trailer}}" class="card__trailer"> Watch trailer</a>
+                               <a href="{% url 'add movie to list' movie.pk %}"><button class="sign__btn" type="button"> Add MV to List</button></a>
+                            </div>
+                            <div class="col-12 col-md-8 col-lg-9 col-xl-7">
+                                <div class="card__content">
+                                    <ul class="card__meta">
+                                        <li><span>Status:</span> <a>{{ movie.status}}</a></li>
+                                        <li><span>Cast:</span><a>{{ movie.actors }}</a></li>
+                                        <li><span>Genre:</span><a>{{ movie.genres }}</a> </li>
+                                        <li><span>Release date:</span> {{ movie.release_date }}</li>
+                                        <li><span>Duration:</span> {{ movie.duration}}m</li>
+                                        <li><span>Original Language:</span>{{ movie.language }}</li>
+                                    </ul>
+                                    <div class="card__description">
+                                        <p>Description:</p>
+                                        {{ movie.description }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6">
+                    <div class="card__content">
+                        <ul class="card__meta">
+                            <li><span>Budget:</span> {{ movie.budget|floatformat:2 }}</li>
+                            <li><span>Roles:</span> <a>{{ movie.roles }}</a></li>
+                            <li><span>Production companies:</span>{{ movie.production_companies }}</li>
+                            <li><span>IMDB link:</span> <a href="{{ movie.imdb_link }}">{{ movie.imdb_link }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

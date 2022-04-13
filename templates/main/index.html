@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+    <section class="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="home__title"><b>Preview</b> of your lists</h1>
+                    <div class="catalog preview">
+                        <div class="container">
+                            <div class="row row--grid">
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/fantasy_cover.jpg' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Fantasy</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/action_cover.avif' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Action</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/mystery_cover.avif' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Mystery</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/horror_cover.avif' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Horror</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/scifi_cover.avif' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Sci-Fi</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                    <div class="card">
+                                        <div class="card__cover">
+                                            <img src="{% static 'img/other_cover.avif' %}" alt="">
+                                        </div>
+                                        <div class="card__content">
+                                            <h3 class="card__title">Other</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section section--border">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-xl-10">
+                    <h2 class="section__title section__title--mb">
+                        <b>MovieList</b> – Your place for custom Lists
+                    </h2>
+                    <p class="section__text">
+                        MovieList allows you to create custom named Lists with a cover of your choice!
+                        After you can search for a Movie that you watched and add it to the List.
+                        You can have a lot of Lists, and you can divide your Movies however you want.
+                        Or you can make a List for example 'Completed' and have all movies that you
+                        watched in it!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

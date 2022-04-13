@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+<div class="sidebar">
+    <a href="{% url 'index' %}" class="sidebar__logo">
+        <img src="{% static 'img/logo.png' %}" alt="">
+    </a>
+    <div class="sidebar__user">
+        <div class="sidebar__user-img">
+            <img src="{% static 'img/user.svg' %}" alt="">
+        </div>
+        <div class="sidebar__user-title">
+            <p>{{ user.profile.username }}</p>
+        </div>
+    </div>
+    <div class="sidebar__nav-wrap">
+        <ul class="sidebar__nav">
+            {% if lists %}
+                {% for l in lists %}
+                    <li class="sidebar__nav-item">
+                        <a href="{% url 'details list' l.pk %}" class="sidebar__nav-link"><i
+                                class="icon ion-ios-film"></i>
+                            <span>{{ l.title }}</span></a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            <li class="sidebar__nav-item">
+                <a href="{% url 'dashboard' %}" class="sidebar__nav-link"><i class="icon ion-ios-arrow-round-back"></i>
+                    <span>Back to MovieList</span></a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar__copyright">© MovieList <br>Created by <a href="https://github.com/dandr94" target="_blank">dandr94</a></div>
+</div>
+<main class="main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="main__title">
+                    <h2>{{ list.title }}</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="main__table-wrap">
+                    <table class="main__table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>MOVIE NAME</th>
+                            <th>GRADE</th>
+                            <th>RECOMMEND</th>
+                            {% if is_owner %}
+                            <th>DELETE</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for movie in movie_list %}
+                            <tr>
+                                <td>
+                                    <div class="main__table-text">{{ movie.movie_id }}</div>
+                                </td>
+                                <td>
+                                    <div class="main__table-text"><a
+                                            href="{% url 'movie details' movie.movie_id %}">{{ movie.movie_name }}</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="main__table-text main__table-text--rate"><i
+                                            class="icon ion-ios-star"></i> {{ movie.grade }}</div>
+                                </td>
+                                <td>
+                                    {% if movie.would_recommend %}
+                                        <div class="main__table-text">Yes</div>
+                                    {% elif movie.would_recommend == None %}
+                                        <div class="main__table-text"><a href="#">---</a></div>
+                                    {% else %}
+                                        <div class="main__table-text"><a href="#">No</a></div>
+                                    {% endif %}
+                                </td>
+                                {% if is_owner %}
+                                <td>
+                                    <a  href="{% url 'mvl movie delete' movie.pk %}">
+                                        <i class="icon ion-ios-trash"></i>
+                                    </a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

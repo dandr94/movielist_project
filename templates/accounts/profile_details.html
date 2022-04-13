@@ -1,0 +1,167 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <div class="container">
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                <div class="row row--grid">
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stats">
+                            <span>Username</span>
+                            <p>{{ profile.username }}</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stats">
+                            <span>Total Lists</span>
+                            <p><a href="#">{{ all_lists_count}}</a></p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stats">
+                            <span>Total Movies</span>
+                            <p><a href="#">{{ all_movies_count}}</a></p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stats">
+                            <span>Total Average Grade</span>
+                            <p><a href="#">{{ average_grade }}</a></p>
+                            <i class="icon ion-ios-star-half"></i>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="dashbox">
+                            <div class="dashbox__title">
+                                <h3>Profile Info</h3>
+                            </div>
+                            <div class="dashbox__table-wrap">
+                                <table class="main__table main__table--dash">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">First Name</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.first_name %}
+                                                <div class="main__table-text">{{ profile.first_name }}</div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">Last Name:</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.last_name %}
+                                                <div class="main__table-text">{{ profile.last_name }}</div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">Facebook</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.facebook %}
+                                                <div class="main__table-text"><a
+                                                        href="{{ profile.facebook }}">{{ profile.facebook }}</a></div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">Instagram</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.instagram %}
+                                                <div class="main__table-text"><a
+                                                        href="{{ profile.instagram }}">{{ profile.instagram }}</a></div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">Twitter</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.twitter %}
+                                                <div class="main__table-text"><a
+                                                        href="{{ profile.twitter }}">{{ profile.twitter }}</a></div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="main__table-text">Website</div>
+                                        </td>
+                                        <td>
+                                            {% if profile.website %}
+                                                <div class="main__table-text"><a
+                                                        href="{{ profile.website }}">{{ profile.website }}</a></div>
+                                            {% else %}
+                                                <div class="main__table-text">N/A</div>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            {% if is_owner %}
+                            <a href="{% url 'profile edit' profile.pk %}"><button class="sign__btn" type="submit">Edit</button></a>
+                            <a href="{% url 'profile change password' %}"><button class="sign__btn" type="submit">Change password</button></a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <div class="dashbox">
+                            <div class="dashbox__title">
+                                <h3>Your Lists</h3>
+                            </div>
+                            <div class="dashbox__table-wrap">
+                                <table class="main__table main__table--dash">
+                                    <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Movies Count</th>
+                                        <th>Average Grade</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for list, value in lists.items %}
+                                        <tr>
+                                            <td>
+                                                <div class="main__table-text"><a href="{% url 'details list' list.pk %}">{{ list.title }}</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="main__table-text">{{ value.total_movies }}</div>
+                                            </td>
+                                            <td>
+                                                <div class="main__table-text main__table-text--rate"><i
+                                                        class="icon ion-ios-star"></i> {{ value.average_grade }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
