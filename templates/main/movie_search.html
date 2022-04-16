@@ -1,56 +1,64 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block page_content %}
-<section class="section">
-    <div class="container">
-        <div class="marginsearchfield">
-            <div class="row">
-                <div class="col-12 col-md-7 col-xl-8 searchfield">
-                    <div class="row searchfield">
-                        <div class="col-12">
-                            <form method="POST" class="form form--contacts">
-                                {% csrf_token %}
-                                <div class="row row--form btnsearch">
-                                    <div class="col-12">
-                                        <input type="text" class="form__input" name="search"
-                                               placeholder="Type the name of the movie...">
+    <section class="section">
+        <div class="container">
+            <div class="marginsearchfield">
+                <div class="row">
+                    <div class="col-12 col-md-7 col-xl-8 searchfield">
+                        <div class="row searchfield">
+                            <div class="col-12">
+                                <form method="POST" class="form form--contacts">
+                                    {% csrf_token %}
+                                    <div class="row row--form btnsearch">
+                                        <div class="col-12">
+                                            <input type="text" class="form__input" name="search"
+                                                   placeholder="Type the name of the movie...">
+                                        </div>
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <div class="container">
+                                                * {{ message }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <button type="submit" name="submit" value="search" class="form__btn">Search
+                                        </button>
                                     </div>
-                                    <button type="submit" name="submit" value="search" class="form__btn">Search</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-{% if movies %}
-<section>
-    <div class="catalog">
-        <div class="container">
-            <div class="row row--grid">
-                {% for movie in movies %}
-                <div class="col-6 col-sm-4 col-md-3 col-xl-2">
-                        <div class="card">
-                            <div class="card__cover">
-                                <img src="{{ movie.image }}" alt="">
-                                <span class="card__rate card__rate--green">{{ movie.vote_average }}</span>
-                                <a href="{% url 'movie details' movie.id %}" class="card__play">
-                                    <i class="icon ion-ios-play"></i>
-                                </a>
+    </section>
+    {% if movies %}
+        <section>
+            <div class="catalog">
+                <div class="container">
+                    <div class="row row--grid">
+                        {% for movie in movies %}
+                            <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                                <div class="card">
+                                    <div class="card__cover">
+                                        <img src="{{ movie.image }}" alt="">
+                                        <span class="card__rate card__rate--green">{{ movie.vote_average }}</span>
+                                        <a href="{% url 'movie details' movie.id %}" class="card__play">
+                                            <i class="icon ion-ios-play"></i>
+                                        </a>
+                                    </div>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a
+                                                href="{% url 'movie details' movie.id %}">{{ movie.title }}</a>
+                                        </h3>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card__content">
-                                <h3 class="card__title"><a
-                                        href="{% url 'movie details' movie.id %}">{{ movie.title }}</a>
-                                </h3>
-                            </div>
-                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                {% endfor %}
             </div>
-        </div>
-    </div>
-</section>
-{% endif %}
+        </section>
+    {% endif %}
 {% endblock %}

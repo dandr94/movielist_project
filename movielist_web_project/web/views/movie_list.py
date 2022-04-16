@@ -1,12 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.models import PermissionsMixin
-from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, DeleteView, CreateView
 
 from movielist_web_project.web.forms import DeleteMovieFromMovieListForm, CreateListForm, \
     EditListForm, DeleteListForm
+from movielist_web_project.web.helpers.mixins import PermissionHandlerMixin, HideHeaderAndFooterMixin
 from movielist_web_project.web.models import Movie, List
 
 UserModel = get_user_model()
@@ -23,46 +22,18 @@ class CreateMovieListView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class EditMovieListView(LoginRequiredMixin, UpdateView):
+class EditMovieListView(LoginRequiredMixin, HideHeaderAndFooterMixin, PermissionHandlerMixin, UpdateView):
     model = List
     template_name = 'main/list_edit.html'
     form_class = EditListForm
     success_url = reverse_lazy('dashboard')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
 
-        return context
-
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        owner = self.request.user.id == self.object.user_id
-        if not owner:
-            raise PermissionDenied
-        return response
-
-
-
-class DeleteMovieListView(LoginRequiredMixin,  DeleteView):
+class DeleteMovieListView(LoginRequiredMixin, HideHeaderAndFooterMixin, PermissionHandlerMixin, DeleteView):
     template_name = 'main/list_delete.html'
     form_class = DeleteListForm
     model = List
     success_url = reverse_lazy('dashboard')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
-        return context
-
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        owner = self.request.user.id == self.object.user_id
-        if not owner:
-            raise PermissionDenied
-        return response
 
 
 class DetailsMovieListView(ListView):
@@ -83,7 +54,7 @@ class DetailsMovieListView(ListView):
         return context
 
 
-class DeleteMovieFromMovieList(LoginRequiredMixin, DeleteView):
+class DeleteMovieFromMovieList(LoginRequiredMixin, HideHeaderAndFooterMixin, PermissionHandlerMixin, DeleteView):
     model = Movie
     template_name = 'main/list_movie_delete.html'
     form_class = DeleteMovieFromMovieListForm
@@ -92,15 +63,6 @@ class DeleteMovieFromMovieList(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
         context['is_owner'] = self.request.user.id == self.object.user_id
 
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        owner = self.request.user.id == self.object.user_id
-        if not owner:
-            raise PermissionDenied
-        return response

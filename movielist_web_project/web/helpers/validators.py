@@ -16,6 +16,8 @@ def validate_only_letters_numbers_and_underscore(value):
         raise ValidationError(USERNAME_ONLY_LETTERS_NUMBERS_AND_UNDERSCORE_ERROR_MESSAGE)
 
 
+
+
 def validate_only_letters(value):
     if not value.isalpha():
         raise ValidationError(USERNAME_ONLY_LETTERS_ERROR_MESSAGE)

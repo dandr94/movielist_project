@@ -1,4 +1,5 @@
 import tmdbsimple as tmdb
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,22 +14,26 @@ from movielist_web_project.web.models import MovieDB, List
 
 UserModel = get_user_model()
 tmdb.API_KEY = TMDB_API_KEY
-img_path = 'https://image.tmdb.org/t/p/w500/'
-img_not_found = 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'
+IMG_PATH = 'https://image.tmdb.org/t/p/w500/'
+IMG_NOT_FOUND = 'https://westsiderc.org/wp-content/uploads/2019/08/Image-Not-Available.png'
+TMDB_SEARCH_PAGE_MAX_RESULTS = 1
+EMPTY_KEY_WORD_ERROR_MESSAGE = 'Please enter a keyword'
 
 
-@login_required(login_url='login user')
+@login_required
 def show_search_page(request):
     movies = []
     if request.method == 'POST':
         keyword = request.POST['search']
 
         if keyword == '':
+            messages.error(request, EMPTY_KEY_WORD_ERROR_MESSAGE)
             return redirect('movie search')
 
         search_params = {
             'query': keyword,
-            'page': 1,
+            'page': TMDB_SEARCH_PAGE_MAX_RESULTS,
+            'include_adult': False
         }
         search = tmdb.Search()
         response = search.movie(**search_params)
@@ -37,7 +42,7 @@ def show_search_page(request):
             item_result = {
                 'title': item['title'],
                 'vote_average': item['vote_average'],
-                'image': img_path + item['poster_path'] if item['poster_path'] else img_not_found,
+                'image': IMG_PATH + item['poster_path'] if item['poster_path'] else IMG_NOT_FOUND,
                 'id': item['id'],
             }
 
@@ -62,7 +67,7 @@ class MovieDetailsView(LoginRequiredMixin, TemplateView):
         return context
 
 
-@login_required(login_url='login user')
+@login_required
 def add_movie_to_list(request, pk):
     movie = MovieDB.objects.get(pk=pk)
     lists = List.objects.filter(user_id=request.user.id)

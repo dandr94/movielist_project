@@ -4,7 +4,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 
 from movielist_web_project.accounts.managers import MovieListUserManager
-from movielist_web_project.web.helpers.validators import validate_only_letters, MaxFileSizeInMbValidator
+from movielist_web_project.web.helpers.validators import validate_only_letters
 
 
 class MovieListUser(AbstractBaseUser, PermissionsMixin):

@@ -66,7 +66,7 @@ DEFAULT_DATABASE_CONFIG = {
     'PASSWORD': os.getenv('DB_PASSWORD', '1123QwER'),
 
 }
-t = 5
+
 DATABASES = {
     'default': DEFAULT_DATABASE_CONFIG
 }

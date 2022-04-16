@@ -6,13 +6,16 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView
-from movielist_web_project.accounts.forms import CreateProfileForm, EditProfileForm
+from movielist_web_project.accounts.forms import CreateProfileForm, EditProfileForm, ChangePasswordForm
 from movielist_web_project.accounts.models import Profile
+from movielist_web_project.web.forms import LoginUserForm
 from movielist_web_project.web.helpers.helper_functions import return_list_with_additional_stats
+from movielist_web_project.web.helpers.mixins import RedirectToDashBoardMixin, HideHeaderAndFooterMixin
+
 from movielist_web_project.web.models import Movie, List
 
 
-class RegisterUserView(CreateView):
+class RegisterUserView(HideHeaderAndFooterMixin, CreateView):
     form_class = CreateProfileForm
     template_name = 'accounts/signup.html'
     success_url = reverse_lazy('dashboard')
@@ -22,37 +25,20 @@ class RegisterUserView(CreateView):
         login(self.request, self.object)
         return result
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
-        return context
 
-
-class LoginUserView(LoginView):
+class LoginUserView(RedirectToDashBoardMixin, HideHeaderAndFooterMixin, LoginView):
+    form_class = LoginUserForm
     template_name = 'accounts/signin.html'
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('dashboard')
-
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
-        return context
 
 
 class LogoutUserView(LogoutView):
     pass
 
 
-class ProfileDetailsView(LoginRequiredMixin, DeleteView):
+class ProfileDetailsView(DeleteView):
     model = Profile
     template_name = 'accounts/profile_details.html'
     context_object_name = 'profile'
@@ -73,11 +59,11 @@ class ProfileDetailsView(LoginRequiredMixin, DeleteView):
         return context
 
 
-@login_required(login_url='login user')
+@login_required
 def profile_edit(request, pk):
     profile = Profile.objects.get(pk=pk)
-
     is_owner = request.user.id == profile.user_id
+
     if not is_owner:
         raise PermissionDenied
 
@@ -99,12 +85,8 @@ def profile_edit(request, pk):
     return render(request, 'accounts/profile_edit.html', context)
 
 
-class ChangeUserPasswordView(LoginRequiredMixin, PasswordChangeView):
+class ChangeUserPasswordView(LoginRequiredMixin, HideHeaderAndFooterMixin, PasswordChangeView):
+    form_class = ChangePasswordForm
     template_name = 'accounts/profile_change_password.html'
     success_url = reverse_lazy('dashboard')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hide_header'] = True
-        context['hide_footer'] = True
-        return context
